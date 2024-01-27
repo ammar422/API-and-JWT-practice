@@ -20,20 +20,28 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-route::group(['middleware' => [ 'check', 'chnageLang']], function () {
+route::group(['middleware' => ['check', 'chnageLang']], function () {
 
-    route::namespace('AdminAuth')->prefix('auth/admin')->group(function () {
-        Route::post('login', 'AuthController@login');
-        Route::post('logout', 'AuthController@logout');
-        Route::post('refresh', 'AuthController@refresh');
-        Route::post('me', 'AuthController@me');
-    });
-
-
-    route::middleware(['checkAdminToken:admin'])->group(function () {
+    route::middleware(['auth.guard:admin'])->group(function () {
         route::post('mainCategories', 'MainCategoryController@show');
         route::post('getCategory', 'MainCategoryController@getCategoryById');
         route::post('changeActivtion', 'MainCategoryController@changeActivtion');
     });
+    route::namespace('AdminAuth')->prefix('auth/admin')->group(function () {
+        Route::post('login', 'AuthController@login');
+        route::post('logout', 'AuthController@logout')->middleware('auth.guard:admin');
+    });
+
+    // route::group(['prefix'=>'vendor',])
+
+
+    route::group(['prefix' => 'vendor', 'namespace' => 'Vendor'], function () {
+        route::post('login', 'AuthController@login');
+        route::middleware('auth.guard:vendor')->group(function () {
+            route::post('logout','AuthController@logout');
+            route::post('profile', 'AuthController@getProfile');
+            route::post('getAllVendors', 'AuthController@getAllVendors');
+            route::post('getVendor', 'AuthController@getVendor');
+        });
+    });
 });
-route::get('tst','AdminAuth\AuthController@test')->middleware('api');

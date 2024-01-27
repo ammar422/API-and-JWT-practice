@@ -38,20 +38,9 @@ class Admin extends Authenticatable implements JWTSubject
         'password',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
+
 }

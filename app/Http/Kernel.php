@@ -69,6 +69,7 @@ class Kernel extends HttpKernel
         // my middlewares
         'check' => \App\Http\Middleware\CustomMiddlewares\checkPassword::class,
         'chnageLang' => \App\Http\Middleware\CustomMiddlewares\changeLanguage::class,
-        'checkAdminToken' => \App\Http\Middleware\CustomMiddlewares\checkAdminToken::class,
+        // 'checkAdminToken' => \App\Http\Middleware\CustomMiddlewares\checkAdminToken::class,
+        'auth.guard' => \App\Http\Middleware\CustomMiddlewares\AssignGuard::class,
     ];
 }
